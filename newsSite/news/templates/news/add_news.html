@@ -1,0 +1,35 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="{% static 'bootstrap-5.1.0-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <title>{% block title %}Создание новости{% endblock %}</title>
+</head>
+<body>
+
+{% include 'inc/_nav.html' %}
+
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-12">
+        <h1>Создание новости</h1>
+
+        <form action="{% url 'add_news' %}" method="post">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-primary btn-block mt-1">Добавить новость</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'bootstrap-5.1.0-dist/js/bootstrap.min.js' %}"</script>
+</body>
+</html>

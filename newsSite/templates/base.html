@@ -1,0 +1,69 @@
+{% load static %}
+{% load cache %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="{% static 'bootstrap-5.1.0-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <title>{% block title %}Новости{% endblock %}</title>
+</head>
+<body class="bg-secondary">
+
+{% include 'inc/_nav.html' %}
+
+<div class="container mt-3">
+  <div class="row">
+
+    <div class="col-md-3">
+<!--      {% load static %}-->
+<!--      {% cache 60 sidebar %}-->
+      {% block sidebar %}{% endblock %}
+<!--      {% endcache %}-->
+    </div>
+
+    <div class="col-md-9">
+      {% load cache %}
+      {% block content %}{% endblock %}
+      {% if page_obj.has_other_pages %}
+      <nav aria-label="...">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Пред.</a>
+            </li>
+          {% endif %}
+          {% for page in page_obj.paginator.page_range %}
+
+            {% if page_obj.number == page %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+              </li>
+            {% elif page > page_obj.number|add:-4 and page < page_obj.number|add:4 %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+              </li>
+            {% endif %}
+
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">След.</a>
+            </li>
+          {% endif %}
+
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+<script src="{% static 'bootstrap-5.1.0-dist/js/bootstrap.min.js' %}"</script>
+</body>
+</html>
