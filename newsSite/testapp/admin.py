@@ -1,14 +1,16 @@
 from django.contrib import admin
-from .models import Rubric
+from mptt.admin import DraggableMPTTAdmin
+from .models import Rubric, Article
 
 
-class RubricAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'lft', 'rght', 'tree_id', 'level', 'parent_id')
-    list_display_links = ('id', 'name',)
-    search_fields = ('name',)
-
-
-admin.site.register(Rubric, RubricAdmin)
-
-admin.site.site_title = 'Управление рубриками'
-admin.site.site_header = 'Управление рубриками'
+admin.site.register(
+    Rubric,
+    DraggableMPTTAdmin,
+    list_display=(
+        'tree_actions', 'indented_title', 'id', 'lft', 'rght', 'tree_id', 'level', 'parent_id',
+    ),
+    list_display_links=(
+        'indented_title',
+    ),
+)
+admin.site.register(Article)
